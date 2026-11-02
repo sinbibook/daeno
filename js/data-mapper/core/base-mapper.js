@@ -713,8 +713,14 @@
     var ul = document.createElement('ul');
     btm.appendChild(ul);
 
-    var images = this.getRoomtypeImages(roomtype, 'roomtype_interior');
-    if (!images.length) images = this.getRoomtypeImages(roomtype, 'roomtype_thumbnail');
+    var interior = this.getRoomtypeImages(roomtype, 'roomtype_interior');
+    var thumbs = this.getRoomtypeImages(roomtype, 'roomtype_thumbnail');
+    var images = interior.length ? interior : thumbs;
+
+    // ⚠️ 큰 사진이 썸네일이면 인테리어 1번은 건너뛴다. 백오피스는 썸네일 칸에 인테리어 1번과
+    //    같은 사진을 따로 올려(URL 만 다르다) 아래 URL 비교로는 걸러지지 않았다
+    //    (대노 17실 전부 썸네일 = 인테리어 1번, 파일 내용 동일).
+    if (interior.length && thumbs.length) images = interior.slice(1);
 
     // 큰 사진(getRoomThumbUrl)과 겹치는 장은 건너뛴다
     var mainUrl = this.getRoomThumbUrl(roomtype);

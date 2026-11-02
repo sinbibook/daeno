@@ -200,23 +200,31 @@
   position: relative;
   z-index: 5;
 }
+/* ⚠️ 원본은 서브메뉴(.depth_box)와 흰 판(.hd_lnb_bg)이 화면 위(top:-500% / -300px)에서 0.5초 동안
+   미끄러져 내려온다. 항목이 많으면(대노 18실, 판 높이 484px) 내려오는 동안 흰 판이 헤더를 덮어
+   흰 글씨 메뉴가 블라인드처럼 사라지고 객실 목록이 헤더 위를 지나가 버벅이는 것처럼 보였다.
+   제자리(헤더 바로 아래)에 두고 10px 위에서 살짝 내려오며 나타나게(opacity) 바꾼다.
+   닫힌 상태는 visibility:hidden — 닫혀 있는 판·목록이 마우스를 받아 메뉴가 열리지 않게 한다.
+   transition 은 opacity/transform/visibility 만 — max-height(common.js syncLnbPanel)는 바로 바뀐다. */
 .header .hd_lnb ul .depth1 .depth_box {
   position: absolute;
   left: 50%;
-  top: -500%;
+  top: calc(100% + 12px);
   width: 100%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -10px);
   z-index: -1;
   text-align: center;
   overflow: hidden;
-  transition: all 0.5s;
-  /* 닫힘 자리(top:-500% ≈ 메뉴 높이 5배 위)는 항목이 10개 남짓이면 충분하지만, 객실이 많으면
-     목록 아랫부분이 헤더 밑으로 삐져나와 닫혀 있어도 객실명이 보였다(대노 18실 — 301호~).
-     닫힌 상태는 숨긴다. visibility 는 transition 끝에 바뀌어서 올라가는 동안은 그대로 보인다. */
+  opacity: 0;
   visibility: hidden;
+  transition:
+    opacity 0.3s,
+    transform 0.3s,
+    visibility 0.3s;
 }
 .header .hd_lnb ul .depth1 .depth_box.on {
-  top: calc(100% + 12px);
+  transform: translate(-50%, 0);
+  opacity: 1;
   visibility: visible;
 }
 .header .hd_lnb ul .depth1 .depth_box li {
@@ -245,7 +253,7 @@
 .header .hd_lnb_bg {
   position: absolute;
   left: 0;
-  top: -300px;
+  top: 121px;
   right: 0;
   background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid #e5e5e5;
@@ -253,10 +261,18 @@
   overflow: hidden;
   box-sizing: border-box;
   height: 300px;
-  transition: all 0.5s;
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s,
+    transform 0.3s,
+    visibility 0.3s;
 }
 .header .hd_lnb_bg.on {
-  top: 121px;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 .header .btn_hd_res {
   position: absolute;
@@ -367,7 +383,7 @@
 .header.on .hd_lnb .hd_lnb02 {
   float: inherit;
 }
-.header.on .hd_lnb_bg.on {
+.header.on .hd_lnb_bg {
   top: 76px;
 }
 /* 카테고리 */
@@ -472,10 +488,10 @@
   .header.on .hd_lnb {
     padding-left: 215px;
   }
-  .header .hd_lnb_bg.on {
+  .header .hd_lnb_bg {
     top: 104px;
   }
-  .header.on .hd_lnb_bg.on {
+  .header.on .hd_lnb_bg {
     top: 80px;
   }
 }
@@ -497,10 +513,10 @@
   .header .hd_lnb ul .depth1 .depth_box li {
     font-size: 13px;
   }
-  .header .hd_lnb_bg.on {
+  .header .hd_lnb_bg {
     top: 98px;
   }
-  .header.on .hd_lnb_bg.on {
+  .header.on .hd_lnb_bg {
     top: 75px;
   }
 }
@@ -558,8 +574,8 @@
     display: none !important;
   }
   .header .logo .logo_sub,
-  .header .hd_lnb_bg.on,
-  .header.on .hd_lnb_bg.on {
+  .header .hd_lnb_bg,
+  .header.on .hd_lnb_bg {
     display: none;
   }
   .header .hd_lnb,
