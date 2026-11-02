@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.15.0",
-    "generatedAt": "2026-11-02T03:17:52.598039947Z",
+    "version": "1.16.0",
+    "generatedAt": "2026-11-02T03:18:16.707769754Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -2023,7 +2023,7 @@
                     }
                   ],
                   "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187",
-                  "description": "자연의 풍경을 바라보며 느긋한 시간"
+                  "description": "싱그러운 자연과 함께하는 여유로운 시간"
                 }
               ]
             }
