@@ -2391,85 +2391,6 @@
   margin-top: 2.86em;
   color: #666;
 }
-.view_btm_bnr {
-  font-size: 0;
-  position: relative;
-  padding-bottom: 170px;
-}
-.view_btm_bnr .bnr_bg,
-.view_btm_bnr .bnr_bg div {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 470px;
-  z-index: -1;
-}
-.view_btm_bnr .bnr_bg {
-  background: #262423;
-}
-.view_btm_bnr .bnr_bg div {
-  opacity: 0.15;
-  -webkit-filter: grayscale(90%);
-  filter: grayscale(90%);
-  /* 원본은 인라인 `background: url() no-repeat 100% 50%; background-size: cover` 다.
-     매퍼는 backgroundImage 만 넣으므로 나머지를 여기로 옮긴다 — 없으면 사진이
-     원본 크기(auto)로 왼쪽 위(0 0)부터 깔려 원본과 다른 부분이 보인다. */
-  background-repeat: no-repeat;
-  background-position: 100% 50%;
-  background-size: cover;
-}
-.view_btm_bnr .img,
-.view_btm_bnr .sub_txt {
-  display: inline-block;
-  vertical-align: middle;
-}
-.view_btm_bnr .img {
-  width: 45%;
-  height: 400px;
-}
-.view_btm_bnr .sub_txt {
-  margin-left: 1%;
-  width: 54%;
-  color: #ccc;
-  font-size: 12px;
-  line-height: 1.4;
-}
-.view_btm_bnr .txt {
-  margin-top: 50px;
-  text-align: right;
-}
-.view_btm_bnr .txt strong {
-  font-size: 32px;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: #ccc;
-  font-family: var(--font-en-main), 'Times New Roman', serif;
-}
-.view_btm_bnr .txt p {
-  font-size: 15px;
-  margin-top: 1em;
-  line-height: 1.4;
-  color: #999;
-}
-/* 좌우 반전 — 바로 위 특장점(.about_img_wrap) 마지막 카드의 사진이 왼쪽일 때
-   (카드 수 홀수) 이 배너 사진도 왼쪽이면 두 사진이 위아래로 붙어 한 장처럼 겹쳐 보인다.
-   원본은 카드가 늘 3개 + 중간에 .about_img_list 가 끼어 드러나지 않던 문제다.
-   main-mapper 가 카드 수를 보고 .is-flip 을 붙인다. DOM 순서는 두고 direction 으로만 뒤집는다. */
-.view_btm_bnr.is-flip .inner {
-  direction: rtl;
-}
-.view_btm_bnr.is-flip .inner > * {
-  direction: ltr;
-}
-.view_btm_bnr.is-flip .sub_txt {
-  margin-left: 0;
-  margin-right: 1%;
-  text-align: right;
-}
-.view_btm_bnr.is-flip .txt {
-  text-align: left;
-}
 
 @media only screen and (max-width: 1450px) {
   .about_wide_bnr .img_box {
@@ -2526,19 +2447,6 @@
   .view_top_bnr ul li .txt strong span {
     font-size: 42px;
   }
-  .view_btm_bnr {
-    padding-bottom: 150px;
-  }
-  .view_btm_bnr .bnr_bg,
-  .view_btm_bnr .bnr_bg div {
-    height: 350px;
-  }
-  .view_btm_bnr .img {
-    height: 350px;
-  }
-  .view_btm_bnr .txt strong {
-    font-size: 28px;
-  }
 }
 @media only screen and (max-width: 860px) {
   .about_wide_bnr:before {
@@ -2593,19 +2501,6 @@
   }
   .view_top_bnr ul li .txt strong span {
     font-size: 35px;
-  }
-  .view_btm_bnr {
-    padding-bottom: 100px;
-  }
-  .view_btm_bnr .bnr_bg,
-  .view_btm_bnr .bnr_bg div {
-    height: 300px;
-  }
-  .view_btm_bnr .img {
-    height: 300px;
-  }
-  .view_btm_bnr .txt strong {
-    font-size: 22px;
   }
 }
 @media only screen and (max-width: 640px) {
@@ -2685,34 +2580,6 @@
   }
   .view_top_bnr ul li .txt strong span {
     font-size: 29px;
-  }
-  .view_btm_bnr {
-    padding-bottom: 80px;
-  }
-  .view_btm_bnr .bnr_bg,
-  .view_btm_bnr .bnr_bg div {
-    height: 240px;
-  }
-  .view_btm_bnr .img {
-    width: 48%;
-    height: 200px;
-  }
-  .view_btm_bnr .sub_txt {
-    width: 50%;
-    margin-left: 2%;
-  }
-  .view_btm_bnr.is-flip .sub_txt {
-    margin-left: 0;
-    margin-right: 2%;
-  }
-  .view_btm_bnr .txt {
-    margin-top: 50px;
-  }
-  .view_btm_bnr .txt strong {
-    font-size: 19px;
-  }
-  .view_btm_bnr .txt p {
-    font-size: 14px;
   }
 }
 @media only screen and (max-width: 479px) {

@@ -509,7 +509,6 @@ D2 `room_bnr:N` 과 같은 규약으로, 크롤러가 카드 컷을 **`descripti
 .sub_cont
   .about_wide_bnr  ← about.html 인사말
   .about_img_wrap  ← about.html 좌우 교차 — about[] 블록마다 카드 1개
-  .view_btm_bnr    ← view.html 클로징 배너 (전부 하드코딩)
 ```
 
 원본 `view.html` 의 `.view_top_bnr` 는 가져오지 않았다 — 본문 3영역으로 충분하고,
@@ -536,9 +535,6 @@ D2 `room_bnr:N` 과 같은 규약으로, 크롤러가 카드 컷을 **`descripti
 | `data-main-about-list`       | `about[]` (title / description / images)  | 블록 0개면 섹션째 숨김 · 카드당 사진 1장     |
 | `data-main-about-photos`     | `about[]` **마지막 블록** (사진 2장 이상일 때) | 원본 `.about_img_list` — 사진 최대 3장 가로 + 제목/설명. 없으면 숨김 |
 | `data-main-about-wrap`       | (섹션 래퍼) — 블록 0개면 이 요소를 숨긴다 | —                                           |
-| `data-main-closing-text`     | — (하드코딩)                              | `지친 도시인에게 일상탈출을 위한…`          |
-| `data-main-closing-image`    | 외경 중 `view_banner` 마커 → `getLandscapeImages()[2]` | 원본 view.html `.view_btm_bnr .img` |
-| `data-main-closing-bg`       | 외경 중 `view_banner_bg` 마커 → `getLandscapeImages()[3]` | 흑백 15% 장식이라 placeholder 없음 |
 
 `ABOUT`(원본은 `LANDSCAPE`), `Welcome to`, `SOMETHING SPECIAL`, `Hello,`,
 `.sub_txt` 영문 3줄은 매핑하지 않는 고정 문구다.
@@ -554,41 +550,17 @@ D2 `room_bnr:N` 과 같은 규약으로, 크롤러가 카드 컷을 **`descripti
 | `.about_wide_bnr` 리드       | `{숙소명}에 오신 것을 환영합니다.`               | 동일 패턴     |
 | `.about_wide_bnr strong`     | `Welcome to {영문 숙소명}`                       | 동일 패턴     |
 | `.about_img_wrap` 제목       | `SOMETHING SPECIAL` / `{숙소명}만의 특장점`      | 동일 패턴     |
-| `.view_btm_bnr .sub_txt`     | `Stay with your beloved companion…`              | **완전 동일** |
-| `.view_btm_bnr .txt strong`  | `Hello, {영문 숙소명}`                           | 동일 패턴     |
-| `.view_btm_bnr .txt p`       | `지친 도시인에게 일상탈출을 위한 편안한 휴식처…` | **완전 동일** |
 | `.about_wide_bnr .txt_box p` | 첫 줄만 같고 나머지는 숙소별로 다름              | **매핑**      |
 
-### 클로징 배너 사진은 원본 view.html 이 고른 컷을 쓴다
+### 클로징 배너(`.view_btm_bnr`)는 삭제했다
 
-원본 `view.html` 맨 아래 `.view_btm_bnr` 은 사진(`.img`)과 흑백 배경(`.bnr_bg`)을 손으로 골랐다
-(jd38 `view/4` · `view/10`, 더파란 `view/6` · `view/3`, thesharpps `view/8` · `view/10`).
-예전에는 외경 풀의 3·4번째 장을 임의로 골라 원본과 달랐다.
+원본 `view.html` 맨 아래 배너(사진 + `Hello, {영문명}` + 고정 문구 + 흑백 배경)를 붙였었지만
+운영 요청(대노)으로 영역째 뺐다. 크롤러 마커가 없는 숙소는 사진을 `getLandscapeImages()`
+(= 특장점 사진)에서 골라 바로 위 사진 영역과 같은 사진이 한 번 더 나왔다.
+크롤러가 남기는 `view_banner` / `view_banner_bg` 마커는 이제 쓰지 않는다(남아 있어도 무해).
 
-크롤러가 두 장을 `property_exterior` 사본에 `description` 마커로 남긴다 —
-template-a `about_banner` 와 같은 방식이다(category 를 새로 만들면 어드민이 화이트리스트 밖이라며 버린다).
-
-| 마커             | 자리                     |
-| ---------------- | ------------------------ |
-| `view_banner`    | `data-main-closing-image` |
-| `view_banner_bg` | `data-main-closing-bg`    |
-| `about_banner`   | `data-main-welcome-image` (about.html 인사말 사진 — template-a 와 같은 이름) |
-
-`getViewBannerImage(mark)` 가 `property.images[0].exterior`(적재 후)와 `customFields.property.images`
-(평탄형) 둘 다 본다. 마커가 없으면 종전 규칙으로 떨어지고, `getLandscapeImages()` 의 외경 폴백에서는
-마커 사본을 뺀다.
-
-흑백 배경은 매퍼가 `backgroundImage` 만 넣으므로 원본 인라인의 `no-repeat 100% 50%` + `cover` 는
-`style.css` 의 `.view_btm_bnr .bnr_bg div` 가 갖는다. 빠지면 사진이 원본 크기로 왼쪽 위부터 깔린다.
-
-### 클로징 배너는 특장점 카드 수가 홀수면 좌우를 뒤집는다
-
-특장점 카드는 홀수 번째가 사진 왼쪽이다. 카드 수가 홀수면 마지막 카드 사진이 왼쪽인데,
-바로 아래 `.view_btm_bnr` 사진도 왼쪽이라 두 사진이 위아래로 붙어 한 장처럼 겹쳐 보였다(더파란 3개).
-원본은 두 영역이 서로 다른 페이지(about / view)라 드러나지 않던 문제다.
-
-`mapAboutBlocks()` 가 카드 수를 보고 `.view_btm_bnr` 에 `.is-flip` 을 붙인다. CSS 는 DOM 순서를
-두고 `direction: rtl` 로만 사진을 오른쪽, 영문 문구를 왼쪽으로 보내고 `Hello, …` 는 왼쪽 정렬한다.
+`about_banner` 마커(외경 사본 `description`)는 그대로 `data-main-welcome-image`(인사말 사진)가 쓴다 —
+`getViewBannerImage(mark)` 가 `property.images[0].exterior` 와 `customFields.property.images` 를 함께 본다.
 
 ### 좌우 교차를 개수 무제한으로 일반화했다
 

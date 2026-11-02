@@ -18,7 +18,6 @@
     this.mapHero();
     this.mapWelcome();
     this.mapAboutBlocks();
-    this.mapClosing();
 
     if (typeof window.initMainSwipers === 'function') window.initMainSwipers();
   };
@@ -30,7 +29,8 @@
   //
   // 원본 about.html + view.html 을 한 페이지로 병합했다. 히어로는 view.html 의
   // 슬라이더(.sub_visual)를 쓰고 본문은 about.html 을 쓴다.
-  // 클로징 배너(.view_btm_bnr)는 두 원본의 문구가 완전히 같아 전부 하드코딩이다.
+  // view.html 맨 아래 클로징 배너(.view_btm_bnr)는 뺐다 — 마커 없는 숙소에서 바로 위
+  // 특장점 사진이 한 번 더 나왔고(대노 바베큐), 운영 요청으로 영역째 삭제했다.
   MainMapper.prototype.getSection = function () {
     var page = this.getPages().main;
     return (page && page.sections && page.sections[0]) || {};
@@ -213,13 +213,6 @@
 
     // 제목(SOMETHING SPECIAL)은 이 래퍼 안에 있어 사진 영역만 있어도 남긴다
     if (wrap) wrap.style.display = rendered || photos ? '' : 'none';
-
-    // 카드 수가 홀수면 마지막 카드 사진이 왼쪽이다. 바로 아래 클로징 배너 사진도
-    // 왼쪽이면 두 사진이 위아래로 붙어 한 장처럼 겹쳐 보이므로 배너를 좌우 반전한다.
-    // 사이에 사진 영역(.about_img_list)이 있으면 둘이 붙지 않으므로 뒤집지 않는다.
-    document.querySelectorAll('.view_btm_bnr').forEach(function (bnr) {
-      bnr.classList.toggle('is-flip', !photos && rendered % 2 === 1);
-    });
   };
 
   // MAPPER: about[] 마지막 블록 → .about_img_list (사진 최대 3장 + 제목/설명)
@@ -245,42 +238,6 @@
     }
     this.setCopySlot('[data-main-about-photos-title]', block.title);
     this.setCopySlot('[data-main-about-photos-text]', block.desc, true);
-  };
-
-  // MAPPER: .view_btm_bnr (클로징 배너)
-  //
-  // 문구는 두 원본이 **완전히 같아** 전부 하드코딩이다. 숙소명만 끼운다.
-  //   .sub_txt      : 영문 3줄 — 숙소명조차 안 들어가는 고정 문구라 HTML 에 둔다
-  //   .txt strong   : `Hello, {영문 숙소명}`
-  //   .txt p        : `지친 도시인에게 일상탈출을 위한 편안한 휴식처, {숙소명}에…`
-  //
-  // 사진은 원본 view.html 배너가 고른 컷(view_banner / view_banner_bg 마커)이 1순위다.
-  // 마커가 없으면 외경(getLandscapeImages)을 쓴다 — 앞의 인사말이 hero.images 를 쓰므로
-  // 뒤쪽 장을 골라 같은 사진이 반복되지 않게 한다.
-  MainMapper.prototype.mapClosing = function () {
-    var self = this;
-    var name = this.getPropertyName();
-    var images = this.getLandscapeImages();
-
-    this.setCopySlot(
-      '[data-main-closing-text]',
-      '지친 도시인에게 일상탈출을 위한 편안한 휴식처,\n' + name + '에 오신 것을 환영합니다.',
-      true
-    );
-
-    var at = function (i) {
-      var img = images[i] || images[images.length - 1] || images[0];
-      return img && img.url;
-    };
-
-    document.querySelectorAll('[data-main-closing-image]').forEach(function (el) {
-      self.setBackground(el, self.getViewBannerImage('view_banner') || at(2), '외경 이미지');
-    });
-    // 뒤 배경은 흑백 15% 로 깔리는 장식이라 placeholder 를 세우지 않는다
-    document.querySelectorAll('[data-main-closing-bg]').forEach(function (el) {
-      var url = self.getViewBannerImage('view_banner_bg') || at(3);
-      if (url) el.style.backgroundImage = 'url(' + url + ')';
-    });
   };
 
   document.addEventListener('DOMContentLoaded', function () {
