@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.26.0",
-    "generatedAt": "2026-11-02T05:53:08.802052325Z",
+    "version": "1.27.0",
+    "generatedAt": "2026-11-02T06:15:42.951814574Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -28,7 +28,7 @@
     "city": "시/군/구",
     "domain": "daeno.kr",
     "realtimeBookingId": "",
-    "ybsId": "70906",
+    "ybsId": "",
     "tripPropertyId": "13523",
     "partnerType": "distributor_b",
     "tripProviderName": "(주)신비서",
@@ -3077,7 +3077,7 @@
                 "description": ""
               },
               "essence": {
-                "title": "",
+                "title": "A Cozy Stay Near the Sea",
                 "images": [
                   {
                     "id": "01a19a28-60e2-70fe-a1ef-9c2ca596ac7f",
@@ -3090,7 +3090,7 @@
                 ],
                 "videos": [ ],
                 "mediaType": "image",
-                "description": ""
+                "description": "바다 가까이, 함께 쉬어가는 하루"
               },
               "gallery": {
                 "title": "",
