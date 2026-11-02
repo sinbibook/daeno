@@ -38,14 +38,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="보령 대노 펜션 - 숙소소개" />
   <meta property="og:description" content="바베큐, 스파, 복층형 특실 등 다양한 타입을 갖추어 커플부터 가족 여행까지 편안하게 휴식을 즐길 수 있는 보령 대노펜션입니다." />
-  
+  <meta property="og:image" content="https://bookingplay-media.s3.amazonaws.com/item_images/2026/11/02/DRkUQuVmiEgI.jpg" />
   <meta property="og:url" content="https://daeno.kr" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="보령 대노 펜션 - 숙소소개" />
   <meta name="twitter:description" content="바베큐, 스파, 복층형 특실 등 다양한 타입을 갖추어 커플부터 가족 여행까지 편안하게 휴식을 즐길 수 있는 보령 대노펜션입니다." />
-  
+  <meta name="twitter:image" content="https://bookingplay-media.s3.amazonaws.com/item_images/2026/11/02/DRkUQuVmiEgI.jpg" />
 </head>
 
   <body oncontextmenu="return false;" onselectstart="return false" ondragstart="return false;">
@@ -122,6 +122,15 @@
                 <p data-main-about-lead></p>
               </div>
               <div data-main-about-list></div>
+            </div>
+
+            <!-- ── 특장점 마지막 항목 (원본 about.html .about_img_list) ── -->
+            <!-- data-* : data-main-about-photos (about[] 마지막 블록, 사진 2장 이상일 때만 노출)
+                 사진 최대 3장을 가로로 놓고 아래에 제목/설명. 기본 숨김, 매퍼가 푼다. -->
+            <div class="about_img_list inner" data-main-about-photos style="display: none">
+              <ul data-main-about-photos-list></ul>
+              <strong data-main-about-photos-title></strong>
+              <p data-main-about-photos-text></p>
             </div>
 
             <!-- ── 클로징 배너 (원본 view.html .view_btm_bnr) ──── -->

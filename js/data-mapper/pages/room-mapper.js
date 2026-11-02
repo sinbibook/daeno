@@ -197,13 +197,16 @@
   // MAPPER: roomtypes[i].images → 상세 배너 사진 5장
   //
   // 원본은 배너 3종에 사진을 5장 쓴다 (top 2 + wide 1 + txt 2).
-  // 크롤러가 원본 컷에 남긴 room_bnr:N 마커가 1순위다 — N 이 곧 data-room-bnr-image 칸 번호다.
-  // 마커가 없는 칸은 종전처럼 객실 사진 **두 번째 장부터** 배분한다 (히어로 첫 장이
+  // 1순위는 백오피스 객실의 「컨셉 및 외경 이미지」(roomtype_exterior) — 조각컷을 올리는 칸이다.
+  // N 번째 사진이 data-room-bnr-image="N" 칸으로 간다 (template-a 의 조각컷 6자리와 같은 쓰임).
+  // 그다음은 크롤러가 원본 컷에 남긴 room_bnr:N 마커 — N 이 곧 칸 번호다.
+  // 둘 다 없는 칸은 종전처럼 객실 사진 **두 번째 장부터** 배분한다 (히어로 첫 장이
   // 연달아 나오지 않게). 사진이 모자라면 앞에서부터 순환해 채운다 —
   // 배너는 문구가 본체라 자리가 비면 레이아웃이 무너진다.
   RoomMapper.prototype.mapBannerImages = function (roomtype) {
     var self = this;
     var photos = this.getRoomPhotos(roomtype);
+    var exterior = this.getRoomtypeImages(roomtype, 'roomtype_exterior');
     var marked = this.getRoomBannerImages(roomtype);
     var slots = document.querySelectorAll('[data-room-bnr-image]');
     if (!slots.length) return;
@@ -213,7 +216,8 @@
     slots.forEach(function (el) {
       var i = Number(el.getAttribute('data-room-bnr-image')) || 0;
       var img = pool.length ? pool[i % pool.length] : null;
-      self.setBackground(el, marked[i] || (img && img.url), '객실 이미지');
+      var cut = exterior[i] && exterior[i].url;
+      self.setBackground(el, cut || marked[i] || (img && img.url), '객실 이미지');
     });
   };
 

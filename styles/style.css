@@ -210,9 +210,14 @@
   text-align: center;
   overflow: hidden;
   transition: all 0.5s;
+  /* 닫힘 자리(top:-500% ≈ 메뉴 높이 5배 위)는 항목이 10개 남짓이면 충분하지만, 객실이 많으면
+     목록 아랫부분이 헤더 밑으로 삐져나와 닫혀 있어도 객실명이 보였다(대노 18실 — 301호~).
+     닫힌 상태는 숨긴다. visibility 는 transition 끝에 바뀌어서 올라가는 동안은 그대로 보인다. */
+  visibility: hidden;
 }
 .header .hd_lnb ul .depth1 .depth_box.on {
   top: calc(100% + 12px);
+  visibility: visible;
 }
 .header .hd_lnb ul .depth1 .depth_box li {
   font-size: 14px;
@@ -272,24 +277,50 @@
 }
 /* 네이버예약 (homepage.socialLinks.blog) — 원본(브리앙뜨) `.btn_hd_res.naver`.
    인스타그램 (homepage.socialLinks.instagram) — 원본에 없어 같은 글자 버튼(.insta)으로 만든다.
+   YBS (property.ybsId) — 원본(thehaebeach.co.kr) `.btn_hd_res.ybs`.
    원본은 예약하기 | 네이버예약 | YBS 를 같은 버튼 스타일로 나란히 세웠다(색도 예약하기와 같다).
-   우리는 예약하기 | 네이버예약 | 인스타그램 순서이고, 셋 다 오른쪽 끝(right:0)에 겹쳐 있다가
-   값이 있는 버튼(매퍼가 루트에 찍는 data-social-blog / data-social-instagram)만큼
-   왼쪽 버튼들이 비켜선다 — a 의 margin-right 로 민다.
+   우리는 예약하기 | 네이버예약 | 인스타그램 | YBS 순서이고, 넷 다 오른쪽 끝(right:0)에 겹쳐 있다가
+   값이 있는 버튼(매퍼가 루트에 찍는 data-social-blog / data-social-instagram / data-ybs)만큼
+   왼쪽 버튼들이 비켜선다 — a 의 margin-right 로 민다. 켜진 칸 수는 --hd-* (0/1) 로 센다.
    버튼 한 칸 = 글자 5자(Noto Sans KR, 자간 -0.07em 에서 약 4.3em) + 좌우 padding(1.86em × 2)
-   + 간격 10px. 「네이버예약」·「인스타그램」 모두 5자라 같은 칸이다.
-   글자 크기를 따라가도록 a 의 em 으로 잡는다. */
+   + 간격 10px. 「네이버예약」·「인스타그램」 모두 5자라 같은 칸이고, 「YBS」는 글자 폭을
+   4.3em 으로 고정해 같은 칸에 맞춘다.
+   글자 크기를 따라가도록 a 의 em 으로 잡는다(--hd-cell 의 em 은 쓰는 자리인 a 기준으로 풀린다). */
+:root {
+  --hd-blog: 0;
+  --hd-insta: 0;
+  --hd-ybs: 0;
+}
+[data-social-blog='on'] {
+  --hd-blog: 1;
+}
+[data-social-instagram='on'] {
+  --hd-insta: 1;
+}
+[data-ybs='on'] {
+  --hd-ybs: 1;
+}
+.header .btn_hd_res {
+  --hd-cell: calc(4.3em + 3.72em + 10px);
+}
 .header .btn_hd_res.naver,
-.header .btn_hd_res.insta {
+.header .btn_hd_res.insta,
+.header .btn_hd_res.ybs {
   right: 0;
 }
-[data-social-instagram='on'] .header .btn_hd_res.naver a,
-[data-social-blog='on'] .header .btn_hd_res:not(.naver, .insta) a,
-[data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a {
-  margin-right: calc(4.3em + 3.72em + 10px);
+.header .btn_hd_res.ybs a {
+  box-sizing: content-box;
+  width: 4.3em;
+  text-align: center;
 }
-[data-social-blog='on'][data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a {
-  margin-right: calc((4.3em + 3.72em + 10px) * 2);
+.header .btn_hd_res.insta a {
+  margin-right: calc(var(--hd-cell) * var(--hd-ybs));
+}
+.header .btn_hd_res.naver a {
+  margin-right: calc(var(--hd-cell) * (var(--hd-insta) + var(--hd-ybs)));
+}
+.header .btn_hd_res:not(.naver, .insta, .ybs) a {
+  margin-right: calc(var(--hd-cell) * (var(--hd-blog) + var(--hd-insta) + var(--hd-ybs)));
 }
 .header .btn_menu {
   display: inline-block;
@@ -365,8 +396,10 @@
   height: 100%;
   padding: 10px 0 0;
 }
+/* 원본 자리(패널 왼쪽 어두운 여백 = 화면 좌상단). 원본은 absolute 라 스크롤하면 문서 위에
+   남았으므로 fixed 로 화면에 붙인다. 패널(.aisde_inner)은 화면의 86% 라 왼쪽 14% 여백에 들어간다. */
 .aside .btn_close {
-  position: absolute;
+  position: fixed;
   left: 10px;
   top: 10px;
   width: 27px;
@@ -483,13 +516,8 @@
     padding: 0 1.2em;
   }
   /* padding 이 1.2em × 2 로 줄어드는 구간 — 비켜서는 칸도 같이 줄인다 */
-  [data-social-instagram='on'] .header .btn_hd_res.naver a,
-  [data-social-blog='on'] .header .btn_hd_res:not(.naver, .insta) a,
-  [data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a {
-    margin-right: calc(4.3em + 2.4em + 10px);
-  }
-  [data-social-blog='on'][data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a {
-    margin-right: calc((4.3em + 2.4em + 10px) * 2);
+  .header .btn_hd_res {
+    --hd-cell: calc(4.3em + 2.4em + 10px);
   }
   .header.on .hd_lnb {
     padding-left: 140px;
@@ -497,17 +525,19 @@
 }
 /* 1099px 이하에서는 헤더 폭이 모자라, 네이버예약·인스타그램 칸만큼 예약하기를 왼쪽으로 밀면
    TRAVEL 메뉴가 켜진 숙소에서 예약하기가 LOCATION 메뉴와 겹친다(1024px -36px, 880px -95px 실측).
-   이 구간에서는 헤더의 소셜 버튼은 숨기고 aside(메뉴)의 같은 버튼으로 대신한다 — 예약하기는 원래 자리. */
+   이 구간에서는 헤더의 소셜·YBS 버튼은 숨기고 aside(메뉴)·푸터의 같은 버튼으로 대신한다 — 예약하기는 원래 자리. */
 @media only screen and (max-width: 1099px) {
   .header .btn_hd_res.naver,
-  .header .btn_hd_res.insta {
+  .header .btn_hd_res.insta,
+  .header .btn_hd_res.ybs {
     display: none !important;
   }
-  [data-social-instagram='on'] .header .btn_hd_res.naver a,
-  [data-social-blog='on'] .header .btn_hd_res:not(.naver, .insta) a,
-  [data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a,
-  [data-social-blog='on'][data-social-instagram='on'] .header .btn_hd_res:not(.naver, .insta) a {
-    margin-right: 0;
+  [data-social-blog],
+  [data-social-instagram],
+  [data-ybs] {
+    --hd-blog: 0;
+    --hd-insta: 0;
+    --hd-ybs: 0;
   }
 }
 @media only screen and (max-width: 860px) {
@@ -750,6 +780,9 @@
   letter-spacing: -0.05em;
   font-weight: 500;
   color: #fff;
+  /* 긴 숙소명이 두 줄로 꺾여 사진 아래 밝은 띠로 내려가지 않게 한 줄로 둔다.
+     넘치면 js/pages/index.js 의 fitHeroName() 이 폭에 맞춰 글자를 줄인다. */
+  white-space: nowrap;
 }
 .main_visual .visual_txt p {
   font-family: var(--font-ko-main), arial, helvetica, 'Malgun Gothic', dotum, sans-serif;

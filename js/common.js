@@ -58,33 +58,55 @@ $(function () {
       return items.eq(n - 1)[0].getBoundingClientRect().bottom - top;
     }
 
+    // ⚠️ .depth_box / .hd_lnb_bg 는 top 이 0.5초 transition 으로 내려온다.
+    //    mouseenter 직후에 재면 아직 출발점(top:-500%)이라 목록 끝이 실제보다
+    //    한참 위로 잡혀 색판이 짧아진다(객실 18실에서 목록이 판 밖으로 100px 넘게 흘렀다).
+    //    transition 을 끈 복제본을 같은 자리에 잠깐 붙여 **도착 위치**를 잰다.
+    function measureOpen(el, fn) {
+      var probe = el.cloneNode(true);
+      probe.style.transition = 'none';
+      probe.style.visibility = 'hidden';
+      probe.classList.add('on');
+      el.parentNode.appendChild(probe);
+      try {
+        return fn(probe);
+      } finally {
+        el.parentNode.removeChild(probe);
+      }
+    }
+
     function syncLnbPanel() {
       var $bg = $('.hd_lnb_bg');
       var bottom = 0;
 
       $('.hd_lnb .depth_box.on').each(function () {
-        var el = this;
         var $box = $(this);
 
         // 상한을 풀고 실제 내용 높이를 잰다
         $box.css({ 'max-height': '', 'overflow-y': '' });
 
-        // 화면에 남는 높이와 15개 높이 중 작은 쪽으로 자른다
-        var top = el.getBoundingClientRect().top;
-        var room = $(window).height() - top - LNB_BOTTOM_GAP;
-        var cap = Math.min(room, itemsHeight($box, LNB_MAX_ITEMS));
+        var boxBottom = measureOpen(this, function (probe) {
+          // 화면에 남는 높이와 15개 높이 중 작은 쪽으로 자른다
+          var top = probe.getBoundingClientRect().top;
+          var room = $(window).height() - top - LNB_BOTTOM_GAP;
+          var cap = Math.min(room, itemsHeight($(probe), LNB_MAX_ITEMS));
 
-        if (el.scrollHeight > cap) {
-          $box.css({ 'max-height': Math.max(120, cap) + 'px', 'overflow-y': 'auto' });
-        }
+          if (probe.scrollHeight > cap) {
+            var height = Math.max(120, cap);
+            $box.css({ 'max-height': height + 'px', 'overflow-y': 'auto' });
+            return top + height;
+          }
+          return probe.getBoundingClientRect().bottom;
+        });
 
-        var rect = el.getBoundingClientRect();
-        if (rect.bottom > bottom) bottom = rect.bottom;
+        if (boxBottom > bottom) bottom = boxBottom;
       });
 
       if (!$bg.length || !bottom) return;
       // 색판 위쪽은 CSS 가 정한 자리를 그대로 두고 아래로만 늘린다
-      var bgTop = $bg[0].getBoundingClientRect().top;
+      var bgTop = measureOpen($bg[0], function (probe) {
+        return probe.getBoundingClientRect().top;
+      });
       var need = bottom - bgTop + LNB_PANEL_PAD;
       $bg.css('height', Math.max(need, 0) + 'px');
     }

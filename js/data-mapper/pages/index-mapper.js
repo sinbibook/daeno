@@ -85,6 +85,7 @@
     this.mapLandscape();
     this.mapReserve();
 
+    if (typeof window.fitIndexHeroName === 'function') window.fitIndexHeroName();
     if (typeof window.initIndexSwipers === 'function') window.initIndexSwipers();
   };
 
@@ -276,10 +277,14 @@
 
   // MAPPER: essence → .main_landscape
   //
-  // 문구 슬롯이 둘이다.
-  //   title_box p       : LANDSCAPE 아래 회색 리드 한 줄  ← 눈썹
-  //   .txt_box p        : 파란 판 안 본문 여러 줄          ← 본문
-  // .txt_box strong(`{영문 숙소명} / Watching Scenery`)은 장식 고정 문구다.
+  // 문구 슬롯
+  //   .txt_box strong   : 판 제목 (`{영문 숙소명} / Watching Scenery`) ← essence.title
+  //   .txt_box p        : 판 안 본문 여러 줄                          ← essence.description
+  //   title_box p       : LANDSCAPE 아래 회색 리드 한 줄 — 고정 문구(`{숙소명}의 멋진 전경을…`)
+  //
+  // 운영 요청(대노)으로 「핵심 메시지 섹션」 제목이 판 제목을 바꾼다. 비면 원본 문구 그대로다.
+  // 리드 한 줄은 원본 4곳(jd38 · 더파란 · thesharpps · himong)이 모두 숙소명만 바꾼 같은
+  // 문장이라 데이터로 받지 않는다.
   //
   // 사진은 essence → gallery 순으로 찾고, 둘 다 비면 base 의 getLandscapeImages()
   // (pages.main.about[] → main hero → property.exterior)로 떨어진다.
@@ -287,14 +292,31 @@
   // 사라지면 편집자가 이 자리가 있다는 것 자체를 모른다.
   IndexMapper.prototype.mapLandscape = function () {
     var self = this;
-    var copy = this.pickCopy(this.getSection().essence);
+    var essence = this.getSection().essence || {};
+    var title = this.cleanText(essence.title);
     var name = this.getPropertyName();
+    var nameEn = this.getPropertyNameEn();
 
     setAllText(
       '[data-index-landscape-description]',
-      copy.eyebrow || (name ? name + '의 ' : '') + '멋진 전경을 미리보기 하세요.'
+      (name ? name + '의 ' : '') + '멋진 전경을 미리보기 하세요.'
     );
-    this.setCopySlot('[data-index-landscape-text]', copy.body, true);
+
+    // 판 제목 — 원본 마크업(영문명 span + Watching Scenery)을 처음 한 번 기억해 두고,
+    // 제목이 비면 그것으로 되돌린다 (프리뷰는 같은 페이지에서 다시 매핑한다)
+    document.querySelectorAll('[data-index-landscape-title]').forEach(function (el) {
+      if (el.tplDefaultHtml === undefined) el.tplDefaultHtml = el.innerHTML;
+      if (title) {
+        el.innerHTML = self.nl2br(title);
+        return;
+      }
+      el.innerHTML = el.tplDefaultHtml;
+      el.querySelectorAll('[data-property-name-en]').forEach(function (span) {
+        span.textContent = nameEn;
+      });
+    });
+
+    this.setCopySlot('[data-index-landscape-text]', this.cleanText(essence.description), true);
 
     var fallback = this.getLandscapeImages();
     var url = this.pickImage('essence', 'gallery') || (fallback[0] && fallback[0].url);
@@ -306,13 +328,18 @@
 
   // MAPPER: closing / signature / gallery → .main_reserve
   //
-  //   closing   → 이용안내 블록 (사진 + 문구)
+  //   closing   → 두 블록 뒤에 깔리는 배경 사진(.reserve_bg) + 이용안내 블록 문구
+  //   gallery   → 이용안내 블록 사진
   //   signature → 오시는길 블록 (사진 + 문구) — videos/mediaType 은 mapIntroVideo() 가 따로 씀
-  //   gallery   → 두 블록 뒤에 깔리는 배경 사진(.reserve_bg)
+  //
+  // ⚠️ 운영자는 「마무리 섹션」 사진을 맨 아래 배경으로 기대한다(대노 피드백 —
+  //    마무리 섹션에 넣었는데 배경이 안 바뀐다). 그래서 배경은 closing 이 1순위이고
+  //    closing → gallery → hero 로 떨어진다. 이용안내 사진은 gallery → hero 다.
+  //    배경이 gallery 로 떨어졌을 때 이용안내 사진까지 gallery 면 같은 사진이 두 번 나오므로
+  //    이용안내는 배경과 다른 첫 사진을 쓴다.
   //
   // 두 블록 모두 문구가 비면 숙소명을 끼운 원본 문장이 기본값이다.
-  // 사진은 자기 블록 → gallery → hero 순으로 떨어진다. 이 섹션은 문구가 본체라
-  // 사진이 없다고 섹션을 숨기지 않는다(placeholder 로 남긴다).
+  // 이 섹션은 문구가 본체라 사진이 없다고 섹션을 숨기지 않는다(placeholder 로 남긴다).
   IndexMapper.prototype.mapReserve = function () {
     var self = this;
     var name = this.getPropertyName();
@@ -332,18 +359,19 @@
       true
     );
 
+    var bg = this.pickImage('closing', 'gallery', 'hero');
+    var reserve = [this.pickImage('gallery'), this.pickImage('hero')].filter(function (url) {
+      return url && url !== bg;
+    })[0];
+
     var slots = [
-      [
-        '[data-index-reserve-image]',
-        this.pickImage('closing', 'gallery', 'hero'),
-        '이용안내 이미지'
-      ],
+      ['[data-index-reserve-image]', reserve || bg, '이용안내 이미지'],
       [
         '[data-index-directions-image]',
-        this.pickImage('signature', 'gallery', 'hero'),
+        this.pickImage('signature', 'hero'),
         '오시는길 이미지'
       ],
-      ['[data-index-reserve-bg]', this.pickImage('gallery', 'hero'), '']
+      ['[data-index-reserve-bg]', bg, '']
     ];
     slots.forEach(function (slot) {
       document.querySelectorAll(slot[0]).forEach(function (el) {

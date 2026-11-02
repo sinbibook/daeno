@@ -61,6 +61,44 @@
 
   global.initIndexSwipers = initIndexSwipers;
 
+  // ── 히어로 영문 숙소명 글자 크기 맞춤 ────────────────────
+  // 원본 숙소명(JD38)은 짧아 고정 크기(83 / 75 / 60 / 50px)로 충분했지만
+  // `Boryeong Daeno Pension` 처럼 긴 이름은 모바일에서 두 줄로 꺾이고, 둘째 줄이
+  // 히어로 사진 아래 밝은 띠로 내려가 흰 글자가 잘린 것처럼 보였다.
+  // 한 줄(white-space:nowrap — style.css)로 두고, 넘치면 폭에 맞을 때까지만 줄인다.
+  // 짧은 이름은 CSS 크기 그대로다.
+  //
+  // PC 에서는 가운데 아래 스크롤 화살표(.scroll_down)와 이름 첫 글자가 겹쳤다(대노 1000px).
+  // 이름은 오른쪽 정렬이라, 화살표가 보이면 화살표 오른쪽 끝 + 여백부터 판 오른쪽 끝까지를
+  // 쓸 수 있는 폭으로 본다.
+  var HERO_NAME_ARROW_GAP = 30;
+
+  function fitHeroName() {
+    var arrow = document.querySelector('.main_visual .scroll_down img');
+    document.querySelectorAll('.main_visual .visual_txt strong em').forEach(function (em) {
+      em.style.fontSize = '';
+      var box = em.getBoundingClientRect();
+      var available = box.width;
+      if (arrow && arrow.offsetWidth) {
+        var limit = box.right - arrow.getBoundingClientRect().right - HERO_NAME_ARROW_GAP;
+        if (limit > 0) available = Math.min(available, limit);
+      }
+      // em 은 block 이라 폭이 판 전체다 — 글자 자체의 폭은 Range 로 잰다
+      var range = document.createRange();
+      range.selectNodeContents(em);
+      var needed = range.getBoundingClientRect().width;
+      if (!available || !needed || needed <= available) return;
+      var size = parseFloat(window.getComputedStyle(em).fontSize);
+      em.style.fontSize = Math.floor((size * available) / needed) + 'px';
+    });
+  }
+
+  global.fitIndexHeroName = fitHeroName;
+
+  window.addEventListener('resize', fitHeroName);
+  // 웹폰트가 늦게 오면 글자 폭이 달라지므로 다시 잰다
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeroName);
+
   // 매퍼가 돌지 않는 경우(데이터 로드 실패 등)에도 원본 마크업이 있으면 초기화한다
   document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
