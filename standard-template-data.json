@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.17.0",
-    "generatedAt": "2026-11-02T03:20:42.119989948Z",
+    "version": "1.18.0",
+    "generatedAt": "2026-11-02T03:22:35.351707864Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -2031,7 +2031,7 @@
                     {
                       "id": "01a19a45-fc5c-76a2-a404-014c0da225b8",
                       "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793589639829-4rg64w49bn.jpg",
-                      "sortOrder": 3,
+                      "sortOrder": 1,
                       "description": "",
                       "isSelected": true,
                       "blockId": "6cd79788-34c1-41bf-ba65-90dcfb390a05"
@@ -2039,6 +2039,21 @@
                   ],
                   "blockId": "6cd79788-34c1-41bf-ba65-90dcfb390a05",
                   "description": "가까운곳에서 만나는 푸른 바다"
+                },
+                {
+                  "title": "Barbecue",
+                  "images": [
+                    {
+                      "id": "01a19a47-b7d0-7ca3-bea5-d464ebb49e03",
+                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793589753514-g1qbt1ahzp.jpg",
+                      "sortOrder": 2,
+                      "description": "",
+                      "isSelected": true,
+                      "blockId": "29f3cb9b-65ef-482a-aba8-37738acf2235"
+                    }
+                  ],
+                  "blockId": "29f3cb9b-65ef-482a-aba8-37738acf2235",
+                  "description": ""
                 }
               ]
             }
