@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.14.0",
-    "generatedAt": "2026-11-02T03:17:16.175631546Z",
+    "version": "1.15.0",
+    "generatedAt": "2026-11-02T03:17:52.598039947Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -2016,14 +2016,14 @@
                     {
                       "id": "01a19a3f-2d29-7fbe-a493-69c0865fe018",
                       "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793589193688-1ohbv6y6ci.jpg",
-                      "sortOrder": 1,
+                      "sortOrder": 0,
                       "description": "",
                       "isSelected": true,
                       "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187"
                     }
                   ],
                   "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187",
-                  "description": "우리만의 느긋한 시간"
+                  "description": "자연의 풍경을 바라보며 느긋한 시간"
                 }
               ]
             }
