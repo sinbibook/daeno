@@ -77,6 +77,12 @@
           인스타그램
         </a>
       </div>
+      <!-- data-* 속성 : data-ybs-button / data-ybs-wrap (property.ybsId)
+           원본(thehaebeach.co.kr)처럼 예약하기 줄 맨 오른쪽 글자 버튼. 푸터 사업자정보 줄의
+           「야놀자 YBS」와 같은 링크다. 값이 없으면 숨김(기본 숨김, 값이 있으면 매퍼가 푼다). -->
+      <div class="btn_hd_res ybs" data-ybs-wrap style="display: none">
+        <a href="#!" target="_blank" data-ybs-button>YBS</a>
+      </div>
       <a href="#" class="btn_menu" aria-label="메뉴 열기">
         <img src="images/common/menu_btn2.png" alt="" />
       </a>
@@ -87,16 +93,17 @@
   <div class="hd_lnb_bg"></div>
 
   <div class="aside">
+    <!-- 원본처럼 .aside 직속으로 둬 패널 왼쪽 어두운 여백(화면 좌상단)에 놓는다.
+         원본은 position:absolute 라 스크롤하면 문서 좌상단에 남았고, 예전에는 패널 안으로
+         옮겨 고쳤더니 첫 메뉴(ABOUT)와 겹쳤다. style.css 에서 position:fixed 로 화면에 고정한다.
+         (.aisde_inner 는 overflow-y:auto 라 그 안에서 패널 밖으로 빼면 잘린다) -->
+    <a
+      href="#"
+      class="btn_close"
+      aria-label="닫기"
+      style="background-image: url(images/common/close.png)"
+    ></a>
     <div class="aisde_inner">
-      <!-- 원본은 btn_close 가 .aside 직속이라 position:absolute 의 기준 조상이 없어
-           스크롤 시 문서 좌상단에 남는다. .aisde_inner(position:fixed) 안으로 넣어
-           패널 좌상단에 고정한다. (t-template-H 와 같은 처리) -->
-      <a
-        href="#"
-        class="btn_close"
-        aria-label="닫기"
-        style="background-image: url(images/common/close.png)"
-      ></a>
       <div class="aside_box">
         <div class="depth1">ABOUT</div>
         <ul class="depth_list">
@@ -145,6 +152,11 @@
           <a href="#!" target="_blank" rel="noopener" data-homepage-socialLinks-instagram>
             인스타그램
           </a>
+        </div>
+        <!-- data-* 속성 : data-ybs-button / data-ybs-wrap (property.ybsId)
+             모바일에서는 헤더 버튼이 숨으므로 원본(thehaebeach.co.kr)처럼 aside 에 같은 버튼을 둔다. -->
+        <div class="btn_aside_res" data-ybs-wrap style="display: none">
+          <a href="#!" target="_blank" data-ybs-button>YBS</a>
         </div>
       </div>
     </div>

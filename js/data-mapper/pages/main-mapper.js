@@ -140,9 +140,15 @@
   //
   // 블록이 하나도 없으면 섹션째 숨긴다 — 제목만 남은 빈 영역이 생기는 것보다 낫다.
   // (인사말 .about_wide_bnr 은 페이지 본체라 비어도 placeholder 로 남긴다)
+  //
+  // ⚠️ 마지막 블록은 원본 about.html 의 `.about_img_list`(사진 3장 가로 + 제목/설명)다.
+  //    크롤러가 원본 4곳 모두에서 이 영역을 about[] 마지막 블록(사진 3장)으로 담는다
+  //    (template-i/crawl.js). 예전에는 이 블록도 카드로 그려 사진이 1장만 나왔다(대노 Barbecue).
+  //    판정은 사진 수로 한다 — 마지막 블록에 사진이 2장 이상이면 사진 영역, 1장 이하면 카드다.
+  MainMapper.prototype.ABOUT_PHOTOS_MAX = 3;
+
   MainMapper.prototype.mapAboutBlocks = function () {
     var self = this;
-    var blocks = this.getSection().about || [];
     var name = this.getPropertyName();
     var list = document.querySelector('[data-main-about-list]');
     var wrap = document.querySelector('[data-main-about-wrap]');
@@ -152,20 +158,36 @@
     if (!list) return;
     list.innerHTML = '';
 
+    // 사진도 문구도 없는 블록은 건너뛴다 (빈 카드가 여백만 차지한다)
+    var blocks = (this.getSection().about || [])
+      .map(function (block) {
+        return {
+          title: self.cleanText(block.title),
+          desc: self.cleanText(block.description),
+          images: self.getSelectedImages(block.images || []).filter(function (image) {
+            return image.url;
+          })
+        };
+      })
+      .filter(function (b) {
+        return b.title || b.desc || b.images.length;
+      });
+
+    var last = blocks[blocks.length - 1];
+    var photos = last && last.images.length >= 2 ? blocks.pop() : null;
+    this.mapAboutPhotos(photos);
+
     var rendered = 0;
     blocks.forEach(function (block) {
-      var title = self.cleanText(block.title);
-      var desc = self.cleanText(block.description);
-      var image = self.getFirstSelectedImage(block.images || []);
-      // 사진도 문구도 없는 블록은 건너뛴다 (빈 카드가 여백만 차지한다)
-      if (!title && !desc && !image) return;
+      var title = block.title;
+      var desc = block.desc;
 
       var box = document.createElement('div');
       box.className = 'box';
 
       var img = document.createElement('div');
       img.className = 'img';
-      self.setBackground(img, image, '특장점 이미지');
+      self.setBackground(img, block.images[0] && block.images[0].url, '특장점 이미지');
 
       var txt = document.createElement('div');
       txt.className = 'txt';
@@ -189,13 +211,40 @@
       rendered += 1;
     });
 
-    if (wrap) wrap.style.display = rendered ? '' : 'none';
+    // 제목(SOMETHING SPECIAL)은 이 래퍼 안에 있어 사진 영역만 있어도 남긴다
+    if (wrap) wrap.style.display = rendered || photos ? '' : 'none';
 
     // 카드 수가 홀수면 마지막 카드 사진이 왼쪽이다. 바로 아래 클로징 배너 사진도
     // 왼쪽이면 두 사진이 위아래로 붙어 한 장처럼 겹쳐 보이므로 배너를 좌우 반전한다.
+    // 사이에 사진 영역(.about_img_list)이 있으면 둘이 붙지 않으므로 뒤집지 않는다.
     document.querySelectorAll('.view_btm_bnr').forEach(function (bnr) {
-      bnr.classList.toggle('is-flip', rendered % 2 === 1);
+      bnr.classList.toggle('is-flip', !photos && rendered % 2 === 1);
     });
+  };
+
+  // MAPPER: about[] 마지막 블록 → .about_img_list (사진 최대 3장 + 제목/설명)
+  // 해당 블록이 없으면 영역째 숨긴다.
+  MainMapper.prototype.mapAboutPhotos = function (block) {
+    var self = this;
+    var host = document.querySelector('[data-main-about-photos]');
+    if (!host) return;
+    if (!block) {
+      host.style.display = 'none';
+      return;
+    }
+    host.style.display = '';
+
+    var ul = host.querySelector('[data-main-about-photos-list]');
+    if (ul) {
+      ul.innerHTML = '';
+      block.images.slice(0, this.ABOUT_PHOTOS_MAX).forEach(function (image) {
+        var li = document.createElement('li');
+        self.setBackground(li, image.url, '특장점 이미지');
+        ul.appendChild(li);
+      });
+    }
+    this.setCopySlot('[data-main-about-photos-title]', block.title);
+    this.setCopySlot('[data-main-about-photos-text]', block.desc, true);
   };
 
   // MAPPER: .view_btm_bnr (클로징 배너)

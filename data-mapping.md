@@ -293,7 +293,7 @@ index 객실 목록은 autoplay 가 없어(원본 `sld_opt3`) 화살표가 유�
 | `data-footer-business-name`         | `businessInfo.businessName`                                 |
 | `data-footer-representative`        | `businessInfo.representativeName`                           |
 | `data-footer-business-number`       | `businessInfo.businessNumber`                               |
-| `data-ybs-button` / `data-ybs-wrap` | `property.ybsId` — 없으면 `data-ybs-wrap` 이 감싼 줄째 숨김 |
+| `data-ybs-button` / `data-ybs-wrap` | `property.ybsId` — 푸터 「야놀자 YBS」 + 헤더(PC)·aside(모바일) 「YBS」 버튼(thehaebeach.co.kr 와 같은 배치). 없으면 `data-ybs-wrap` 째 숨김. 헤더 비켜서기는 루트 `data-ybs` |
 | `data-homepage-socialLinks-blog`    | `homepage.socialLinks.blog` — 헤더·aside 「네이버예약」 버튼. 없으면 `data-social-wrap` 째 숨김 |
 | `data-homepage-socialLinks-instagram` | `homepage.socialLinks.instagram` — 헤더·aside 「인스타그램」 버튼. 없으면 `data-social-wrap` 째 숨김 |
 
@@ -326,9 +326,9 @@ index 객실 목록은 autoplay 가 없어(원본 `sld_opt3`) 화살표가 유�
 | ----------- | ------------------------------------------------------------ |
 | `hero`      | `.main_visual` (히어로)                                    |
 | `essence`   | `.main_landscape` (전경)                                    |
-| `closing`   | `.main_reserve` 이용안내 블록                               |
+| `closing`   | `.main_reserve` 배경 사진(`.reserve_bg`) + 이용안내 블록 문구 |
 | `signature` | `.main_reserve` 오시는길 블록 + `.vimeoWrap` 인트로 영상 밴드 |
-| `gallery`   | `.main_reserve .reserve_bg` 배경                            |
+| `gallery`   | `.main_reserve` 이용안내 블록 사진 (배경 폴백)               |
 
 ⚠️ `.main_special` / `.main_room` 에는 블록을 배정하지 않는다. 두 섹션의 본체는
 `property.facilities[]` 와 `customFields.roomtypes[]` 라 카드가 데이터로 채워지고
@@ -393,14 +393,15 @@ gallery : title = 'Preview'        / description = 빈 값
 | `data-index-special-list`          | `property.facilities[]`                        | `renderSpecialCards()`                    |
 | `data-index-room-description`      | — (하드코딩)                                   | `편안한 휴식이 함께하는 {숙소명}의 객실…` |
 | `data-index-room-list`             | `customFields.roomtypes[]` + `rooms[]`         | `renderRoomSlides()`                      |
-| `data-index-landscape-description` | `pickCopy(essence).eyebrow`                    | 없으면 원본 문장                          |
-| `data-index-landscape-text`        | `pickCopy(essence).body`                       | 없으면 요소째 숨김                        |
+| `data-index-landscape-description` | — (하드코딩) `{숙소명}의 멋진 전경을 미리보기 하세요.` | 원본 4곳이 모두 같은 문장                 |
+| `data-index-landscape-title`       | `essence.title`                                | 판 제목. 없으면 원본 `{영문명}<br>Watching Scenery` |
+| `data-index-landscape-text`        | `essence.description`                          | 없으면 요소째 숨김                        |
 | `data-index-landscape-image`       | `essence` → `gallery` → `getLandscapeImages()` |                                           |
 | `data-index-reserve-text`          | `pickCopy(closing).body`                       | 없으면 원본 문장                          |
-| `data-index-reserve-image`         | `closing` → `gallery` → `hero`                 |                                           |
+| `data-index-reserve-image`         | `gallery` → `hero` (배경과 같은 사진이면 건너뛴다) |                                           |
 | `data-index-directions-text`       | `pickCopy(signature).body`                     | 없으면 원본 문장                          |
-| `data-index-directions-image`      | `signature` → `gallery` → `hero`               |                                           |
-| `data-index-reserve-bg`            | `gallery` → `hero`                             |                                           |
+| `data-index-directions-image`      | `signature` → `hero`                           |                                           |
+| `data-index-reserve-bg`            | **`closing`** → `gallery` → `hero` (「마무리 섹션」 사진 = 맨 아래 배경) |                                           |
 
 매핑하지 않는 장식 고정 문구: `Welcome to`, `SPECIAL`, `ROOMS LIST`, `LANDSCAPE`,
 `Watching Scenery`, `Reservation Guide`, `Directions`, `VIEW MORE`, `이용안내 확인`, `오시는길 확인`.
@@ -519,7 +520,7 @@ D2 `room_bnr:N` 과 같은 규약으로, 크롤러가 카드 컷을 **`descripti
 | 블록      | 화면                                                         |
 | --------- | ------------------------------------------------------------ |
 | `hero`    | `.sub_visual` 슬라이더 + `.about_wide_bnr` 인사말(문구·사진) |
-| `about[]` | `.about_img_wrap .box[]` — 블록당 카드 1개                   |
+| `about[]` | `.about_img_wrap .box[]` — 블록당 카드 1개. 마지막 블록에 사진이 2장 이상이면 `.about_img_list`(사진 3장 가로) |
 
 ### 슬롯
 
@@ -532,7 +533,8 @@ D2 `room_bnr:N` 과 같은 규약으로, 크롤러가 카드 컷을 **`descripti
 | **`data-main-welcome-text`** | **`hero.description`**                    | **이 페이지의 유일한 본문 매핑**            |
 | `data-main-welcome-title`    | `hero.title`                              | 없으면 HTML 기본 조각 `Welcome to {영문명}` |
 | `data-main-about-lead`       | — (하드코딩)                              | `{숙소명}만의 특장점`                       |
-| `data-main-about-list`       | `about[]` (title / description / images)  | 블록 0개면 섹션째 숨김                      |
+| `data-main-about-list`       | `about[]` (title / description / images)  | 블록 0개면 섹션째 숨김 · 카드당 사진 1장     |
+| `data-main-about-photos`     | `about[]` **마지막 블록** (사진 2장 이상일 때) | 원본 `.about_img_list` — 사진 최대 3장 가로 + 제목/설명. 없으면 숨김 |
 | `data-main-about-wrap`       | (섹션 래퍼) — 블록 0개면 이 요소를 숨긴다 | —                                           |
 | `data-main-closing-text`     | — (하드코딩)                              | `지친 도시인에게 일상탈출을 위한…`          |
 | `data-main-closing-image`    | 외경 중 `view_banner` 마커 → `getLandscapeImages()[2]` | 원본 view.html `.view_btm_bnr .img` |
@@ -735,7 +737,7 @@ loop 없음)를 `js/common.js` 의 공용 헬퍼로 옮겨 세 페이지가 함�
 | `data-room-table-pc`         | 객실명 / 기준 / 최대 / 유형 / 평형 (5열)                     |
 | `data-room-table-m`          | 머리글 tr + 값 tr, **평형 제외** 4열                         |
 | `data-room-amenities`        | `rooms[j].amenities` — 없으면 목록째 숨김                    |
-| `data-room-bnr-image="0~4"`  | `room_bnr:N` 마커 컷 → 객실 사진 2번째 장부터        |
+| `data-room-bnr-image="0~4"`  | 「컨셉 및 외경」(`roomtype_exterior`) N번째 → `room_bnr:N` 마커 컷 → 객실 사진 2번째 장부터 |
 | `data-room-floorplan`        | `getRoomFloorplanImages()` — **없으면 영역째 숨김**          |
 | `data-room-floorplan-images` | 평면도 `<img>` 를 담는 자리 — 여러 장이면 세로로 쌓는다      |
 | `data-room-list-slides`      | `roomtypes[]` (`renderRoomSlides`)                           |

@@ -149,9 +149,12 @@
   };
 
   // MAPPER: property.ybsId → [data-ybs-button] (없으면 감싸는 줄째 숨김)
-  // 원본은 이 링크가 헤더가 아니라 푸터 사업자정보 줄에 있다.
+  // 원본(jd38)은 푸터 사업자정보 줄에만 있었고, thehaebeach.co.kr 처럼 헤더(PC)·aside(모바일)
+  // 버튼도 같은 링크로 채운다. 헤더 버튼은 position:absolute 로 오른쪽 끝에 겹쳐 있어서
+  // 왼쪽 버튼들이 비켜설 수 있도록 루트에 `data-ybs` 를 찍는다 (mapSocialLinks 와 같은 방식).
   HeaderFooterMapper.prototype.mapYbs = function () {
-    var ybsId = this.getProperty().ybsId;
+    var ybsId = consultText(this.getProperty().ybsId);
+    document.documentElement.setAttribute('data-ybs', ybsId ? 'on' : 'off');
     document.querySelectorAll('[data-ybs-button]').forEach(function (el) {
       var host = el.closest('[data-ybs-wrap]') || el;
       if (!ybsId) {
