@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.5.0",
-    "generatedAt": "2026-11-02T02:44:43.709219817Z",
+    "version": "1.6.0",
+    "generatedAt": "2026-11-02T02:48:21.415039275Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -1864,21 +1864,48 @@
               },
               "essence": {
                 "title": "",
-                "images": [ ],
+                "images": [
+                  {
+                    "id": "01a19a28-60e2-70fe-a1ef-9c2ca596ac7f",
+                    "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/index_essence/1793587699574-ciyrcyxqcm.jpg",
+                    "sortOrder": 0,
+                    "description": "",
+                    "isSelected": true,
+                    "blockId": null
+                  }
+                ],
                 "videos": [ ],
                 "mediaType": "image",
                 "description": ""
               },
               "gallery": {
                 "title": "",
-                "images": [ ],
+                "images": [
+                  {
+                    "id": "01a19a28-60fd-7a3e-b528-102d613446e9",
+                    "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/index_gallery/1793587699579-ra1ecik85i.jpg",
+                    "sortOrder": 0,
+                    "description": "",
+                    "isSelected": true,
+                    "blockId": null
+                  }
+                ],
                 "videos": [ ],
                 "mediaType": "image",
                 "description": ""
               },
               "signature": {
                 "title": "",
-                "images": [ ],
+                "images": [
+                  {
+                    "id": "01a19a28-60f4-7aaa-a219-cd259a55cee2",
+                    "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/index_signature/1793587699578-88n5opffzy.jpg",
+                    "sortOrder": 0,
+                    "description": "",
+                    "isSelected": true,
+                    "blockId": null
+                  }
+                ],
                 "videos": [ ],
                 "mediaType": "image",
                 "description": ""
