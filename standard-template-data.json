@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.12.0",
-    "generatedAt": "2026-11-02T03:08:19.418496591Z",
+    "version": "1.13.0",
+    "generatedAt": "2026-11-02T03:13:15.795932843Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -1940,7 +1940,7 @@
           "sections": [
             {
               "hero": {
-                "title": "",
+                "title": "Boryeong Daeno Pension",
                 "images": [
                   {
                     "id": "01a19a38-c444-7b7c-aafe-3cc7cc2a2993",
@@ -2007,24 +2007,16 @@
                     "blockId": null
                   }
                 ],
-                "description": ""
+                "description": "가까운 해변을 걷고 돌아와 잠시 쉬어가는 곳.\n스위스풍 건물과 아담한 정원이 반기는 보령 대노 펜션입니다.\n\n함께 식사하고 오늘 다녀온 곳의 이야기를 나누며,\n서두르지 않아도 좋은 하루를 보내보세요.\n소소한 순간들이 모여 기분 좋은 여행의 기억이 됩니다."
               },
               "about": [
                 {
                   "title": "",
                   "images": [
                     {
-                      "id": "01a19a3a-a55c-7bfd-8667-678cd8e81734",
-                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793588896495-5nnqjyk81i.jpg",
+                      "id": "01a19a3f-2d30-7349-8a05-eb56e16b6fdc",
+                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793589193690-m0o9mqs8up.jpg",
                       "sortOrder": 0,
-                      "description": "",
-                      "isSelected": true,
-                      "blockId": "91d3a82b-81aa-4e65-9b99-6c3d55a94a1f"
-                    },
-                    {
-                      "id": "01a19a3a-a544-79c5-9948-abb913ce5de1",
-                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793588896499-f67fk8cii4.jpg",
-                      "sortOrder": 1,
                       "description": "",
                       "isSelected": true,
                       "blockId": "91d3a82b-81aa-4e65-9b99-6c3d55a94a1f"
@@ -2037,25 +2029,9 @@
                   "title": "",
                   "images": [
                     {
-                      "id": "01a19a3a-a528-762c-b30a-7f8ef9fe200e",
-                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793588896502-5h02zojr5t.jpg",
-                      "sortOrder": 2,
-                      "description": "",
-                      "isSelected": true,
-                      "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187"
-                    },
-                    {
-                      "id": "01a19a3a-a673-7295-84df-65926612b281",
-                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793588896502-mf5o1wp04y.jpg",
-                      "sortOrder": 3,
-                      "description": "",
-                      "isSelected": true,
-                      "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187"
-                    },
-                    {
-                      "id": "01a19a3a-a468-73cc-8522-76dba79d9a6e",
-                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793588896501-u9w1m0junn.jpg",
-                      "sortOrder": 4,
+                      "id": "01a19a3f-2d29-7fbe-a493-69c0865fe018",
+                      "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/main_about/1793589193688-1ohbv6y6ci.jpg",
+                      "sortOrder": 1,
                       "description": "",
                       "isSelected": true,
                       "blockId": "ca9e9d80-9966-49ce-8a0f-1baad6cca187"
@@ -2079,7 +2055,16 @@
               },
               "about": {
                 "title": "",
-                "images": [ ],
+                "images": [
+                  {
+                    "id": "01a19a3f-2d19-7451-ae90-298cd0f35831",
+                    "url": "https://jlnjajtcnyqupfaqjerz.supabase.co/storage/v1/object/public/app-images/homepage/01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3/reservation_about/1793589193690-5ow2qeu9oo.jpg",
+                    "sortOrder": 0,
+                    "description": "",
+                    "isSelected": true,
+                    "blockId": null
+                  }
+                ],
                 "description": ""
               }
             }
