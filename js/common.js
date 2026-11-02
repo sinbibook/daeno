@@ -58,9 +58,9 @@ $(function () {
       return items.eq(n - 1)[0].getBoundingClientRect().bottom - top;
     }
 
-    // ⚠️ .depth_box / .hd_lnb_bg 는 top 이 0.5초 transition 으로 내려온다.
-    //    mouseenter 직후에 재면 아직 출발점(top:-500%)이라 목록 끝이 실제보다
-    //    한참 위로 잡혀 색판이 짧아진다(객실 18실에서 목록이 판 밖으로 100px 넘게 흘렀다).
+    // ⚠️ .depth_box / .hd_lnb_bg 는 열릴 때 transition 으로 움직인다(지금은 10px 내려오며
+    //    나타나고, 예전 원본 방식은 top:-500% 에서 미끄러져 내려왔다). mouseenter 직후에 재면
+    //    출발점이 잡혀 색판이 짧아진다(객실 18실에서 목록이 판 밖으로 100px 넘게 흘렀다).
     //    transition 을 끈 복제본을 같은 자리에 잠깐 붙여 **도착 위치**를 잰다.
     function measureOpen(el, fn) {
       var probe = el.cloneNode(true);

@@ -92,18 +92,15 @@
     //    여기서 객실명을 넣으면 실행 순서에 따라 제목이 오락가락한다.
   };
 
-  // 객실 사진 — 인테리어 우선, 없으면 썸네일. 평면도는 섞이지 않는다
+  // 객실 사진 — 인테리어만, 인테리어가 하나도 없을 때만 썸네일. 평면도는 섞이지 않는다
   // (getRoomtypeImages 가 category 로 거른다).
+  // ⚠️ 예전에는 인테리어 뒤에 썸네일을 덧붙였다(URL 이 같으면 제외). 백오피스는 썸네일을
+  //    인테리어 1번과 같은 사진으로 따로 올리는 경우가 많아 URL 만 달라서, 슬라이드 맨 끝에
+  //    1번 사진이 한 번 더 나왔다(대노 101호 6장 → 7장, 파일 내용 동일).
   RoomMapper.prototype.getRoomPhotos = function (roomtype) {
     var interior = this.getRoomtypeImages(roomtype, 'roomtype_interior');
-    var thumbs = this.getRoomtypeImages(roomtype, 'roomtype_thumbnail');
-    return interior.concat(
-      thumbs.filter(function (t) {
-        return !interior.some(function (i) {
-          return i.url === t.url;
-        });
-      })
-    );
+    if (interior.length) return interior;
+    return this.getRoomtypeImages(roomtype, 'roomtype_thumbnail');
   };
 
   // MAPPER: roomtypes[i].images → .sub_visual 슬라이더
