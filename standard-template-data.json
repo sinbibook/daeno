@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "generatedAt": "2026-11-02T02:35:57.144348759Z",
+    "version": "1.1.0",
+    "generatedAt": "2026-11-02T02:37:30.436199442Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -1874,7 +1874,10 @@
           "koSub": null,
           "enMain": null
         },
-        "color": null
+        "color": {
+          "primary": "#FFFFFF",
+          "secondary": "#B89474"
+        }
       },
       "property": {
         "name": "보령 대노 펜션",
