@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.47.0",
-    "generatedAt": "2026-11-02T09:24:37.603184072Z",
+    "version": "1.48.0",
+    "generatedAt": "2026-11-02T09:33:28.278752302Z",
     "templateType": "trip_i",
     "propertyId": "01a11485-b829-7474-ba56-189abacef8c4",
     "homepageId": "01a19a1c-e1e4-7cc7-a9f3-0c08cd2cf7a3"
@@ -44,7 +44,7 @@
     "propertyThemes": [ ],
     "propertyTypes": [ ],
     "businessInfo": {
-      "businessName": "주식회사 대노",
+      "businessName": "대노",
       "businessNumber": "604-81-45278",
       "representativeName": "유명례",
       "businessAddress": "충청남도 보령시 머드로 3",
