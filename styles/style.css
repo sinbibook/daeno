@@ -3862,11 +3862,15 @@
 .footer_wrap .footer .ft_rural_stay_mark_wrap {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
   padding: 0 0 16px;
 }
 .footer_wrap .footer .ft_rural_stay_mark {
   display: block;
   width: 180px;
+  min-width: 0;
+  flex: 0 1 180px;
   height: auto;
   max-width: 100%;
   object-fit: contain;
@@ -3874,6 +3878,7 @@
 @media only screen and (max-width: 640px) {
   .footer_wrap .footer .ft_rural_stay_mark {
     width: 160px;
+    flex-basis: 160px;
   }
 }
 @media only screen and (max-width: 640px) {

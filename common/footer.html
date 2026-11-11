@@ -1,9 +1,10 @@
 <div class="footer_wrap">
   <div class="footer">
-    <!-- data-* 속성 : data-footer-rural-stay-mark-wrap (customFields.footer.ruralStayMark 가 있을 때만 노출, 기본 숨김)
+  <!-- data-* 속성 : data-footer-rural-stay-mark-wrap (customFields.footer.ruralStayMarks 또는 기존 ruralStayMark 가 있을 때만 노출)
          data-footer-rural-stay-mark : 농어촌민박사업자 이미지 (표시마크 + 신고번호, alt = description) -->
     <div class="ft_rural_stay_mark_wrap" data-footer-rural-stay-mark-wrap style="display: none">
-      <img class="ft_rural_stay_mark" src="" alt="농어촌민박사업자" data-footer-rural-stay-mark />
+      <img class="ft_rural_stay_mark" alt="농어촌민박사업자" data-footer-rural-stay-mark />
+      <img class="ft_rural_stay_mark" alt="농어촌민박사업자" data-footer-rural-stay-mark />
     </div>
     <div class="tel">
       <a class="tpl-slot" href="tel:" data-footer-phone-link>
@@ -33,10 +34,8 @@
         <a class="tpl-slot" href="#!" target="_blank" data-ybs-button>야놀자 YBS</a>
       </p>
     </div>
-    <!-- 원본 .calendar 는 실시간 달력(bookingplay) + 개인정보처리방침 2개였다.
-         달력 링크는 bookingplay 파트너 번호가 URL 에 박힌 값이라 데이터로 만들 수 없어
-         가져오지 않는다. 개인정보처리방침만 남긴다. -->
     <div class="calendar">
+      <span data-calendar-wrap style="display: none"><a href="#" target="_blank" rel="noopener noreferrer" data-calendar-link>실시간 달력</a><span class="bar"> | </span></span>
       <a
         href="http://design.trip11.net/privacy/privacy_policy.html"
         class="privacy"
